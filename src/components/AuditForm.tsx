@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { ExtractedInvoice, InvoiceItem } from '@/lib/audit/schema';
-import { Edit3, Plus, Trash2, CheckCircle, RefreshCw } from 'lucide-react';
+import { Edit3, Plus, Trash2, RefreshCw } from 'lucide-react';
 
 interface AuditFormProps {
   invoice: ExtractedInvoice;
@@ -10,14 +10,14 @@ interface AuditFormProps {
 }
 
 export const AuditForm: React.FC<AuditFormProps> = ({ invoice, onChange }) => {
-  const handleFieldChange = (field: keyof ExtractedInvoice, value: any) => {
+  const handleFieldChange = (field: keyof ExtractedInvoice, value: string | number | InvoiceItem[]) => {
     onChange({
       ...invoice,
       [field]: value,
     });
   };
 
-  const handleItemChange = (index: number, field: keyof InvoiceItem, value: any) => {
+  const handleItemChange = (index: number, field: keyof InvoiceItem, value: string | number) => {
     const updatedItems = [...invoice.items];
     updatedItems[index] = {
       ...updatedItems[index],

@@ -32,12 +32,13 @@ export async function POST(req: NextRequest) {
       auditReport,
       timestamp: new Date().toISOString(),
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : 'Failed to process and audit document.';
     console.error('Ingestion API Error:', error);
     return NextResponse.json(
       {
         success: false,
-        error: error.message || 'Failed to process and audit document.',
+        error: errorMessage,
       },
       { status: 500 }
     );

@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { ShieldCheck, Sparkles, FileText, Download, CheckCircle2 } from 'lucide-react';
+import { ShieldCheck, Sparkles, Download } from 'lucide-react';
 import { AuditReport, ExtractedInvoice } from '@/lib/audit/schema';
 
 interface NavbarProps {

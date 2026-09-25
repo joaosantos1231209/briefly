@@ -1,32 +1,24 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Navbar } from '@/components/Navbar';
 import { PresetsBar } from '@/components/PresetsBar';
 import { DocumentViewer } from '@/components/DocumentViewer';
 import { AuditForm } from '@/components/AuditForm';
 import { AuditFlagsPanel } from '@/components/AuditFlagsPanel';
-import { ExtractedInvoice, AuditReport } from '@/lib/audit/schema';
+import { ExtractedInvoice } from '@/lib/audit/schema';
 import { auditInvoice } from '@/lib/audit/rules';
 import { SAMPLE_PRESETS, SamplePreset } from '@/lib/mockData';
-import { Upload, Sparkles, AlertCircle } from 'lucide-react';
+import { AlertCircle } from 'lucide-react';
 
 export default function Dashboard() {
   const [selectedPresetId, setSelectedPresetId] = useState<string | null>('valid');
   const [invoice, setInvoice] = useState<ExtractedInvoice | null>(SAMPLE_PRESETS[0].data);
-  const [auditReport, setAuditReport] = useState<AuditReport | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
-  // Live re-audit whenever invoice state updates
-  useEffect(() => {
-    if (invoice) {
-      const report = auditInvoice(invoice);
-      setAuditReport(report);
-    } else {
-      setAuditReport(null);
-    }
-  }, [invoice]);
+  // Derived state: live re-audit whenever invoice object changes
+  const auditReport = invoice ? auditInvoice(invoice) : null;
 
   const handleSelectPreset = (preset: SamplePreset) => {
     setSelectedPresetId(preset.id);
