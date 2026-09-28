@@ -6,6 +6,7 @@ import { PresetsBar } from '@/components/PresetsBar';
 import { DocumentViewer } from '@/components/DocumentViewer';
 import { AuditForm } from '@/components/AuditForm';
 import { AuditFlagsPanel } from '@/components/AuditFlagsPanel';
+import { Footer } from '@/components/Footer';
 import { ExtractedInvoice } from '@/lib/audit/schema';
 import { auditInvoice } from '@/lib/audit/rules';
 import { SAMPLE_PRESETS, SamplePreset } from '@/lib/mockData';
@@ -29,7 +30,7 @@ export default function Dashboard() {
     setTimeout(() => {
       setInvoice(preset.data);
       setLoading(false);
-    }, 400);
+    }, 300);
   };
 
   const handleInvoiceChange = (updatedInvoice: ExtractedInvoice) => {
@@ -60,6 +61,9 @@ export default function Dashboard() {
       {/* Top Navbar */}
       <Navbar auditReport={auditReport} extracted={invoice} onExport={handleExportJson} />
 
+      {/* Hidden H1 for SEO & Screen Readers */}
+      <h1 className="sr-only">Briefly — Smart Ingestion & Contract/Invoice Audit Hub</h1>
+
       {/* Main Container */}
       <main className="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 space-y-6">
         
@@ -68,8 +72,8 @@ export default function Dashboard() {
 
         {/* Error Alert */}
         {errorMsg && (
-          <div className="p-4 bg-rose-950/40 border border-rose-500/30 rounded-xl flex items-center space-x-3 text-xs text-rose-200">
-            <AlertCircle className="w-5 h-5 text-rose-400 shrink-0" />
+          <div className="p-4 bg-rose-950/40 border border-rose-500/30 rounded-xl flex items-center space-x-3 text-xs text-rose-200" role="alert">
+            <AlertCircle className="w-5 h-5 text-rose-400 shrink-0" aria-hidden="true" />
             <span>{errorMsg}</span>
           </div>
         )}
@@ -95,6 +99,9 @@ export default function Dashboard() {
           </div>
         </div>
       </main>
+
+      {/* Footer */}
+      <Footer />
     </div>
   );
 }

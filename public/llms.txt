@@ -1,0 +1,17 @@
+# Briefly — AI Smart Ingestion & Contract/Invoice Audit Hub
+
+Briefly is a enterprise B2B document processing platform. It ingests unstructured documents (invoices, receipts, supplier contracts), extracts data with structured JSON schemas, and performs deterministic validation (NIF checksums, tax calculation, chronological sequence).
+
+## Main Features
+- Document Processing: Scanned PDFs & Scanned Images -> Structured JSON
+- Tax Validation: Portuguese NIF/VAT Modulo 11 Checksum Verification
+- Business Audit Engine: Mathematical balance reconciliation (Subtotal + VAT = Total, Qty * Price = Line Amount)
+- Interactive Hub: Split-screen document viewer & live reconciliation workspace
+- API Endpoint: /api/ingest for automated document processing pipelines
+
+## Tech Stack
+- Next.js 15 App Router
+- TypeScript (Strict Mode)
+- Google Gemini API (Structured Outputs)
+- Zod Schema Validation
+- Vitest & MSW Integration Testing
