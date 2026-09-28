@@ -33,43 +33,47 @@ O Briefly resolve esta lacuna com uma **arquitetura híbrida de engenharia de so
 
 ```mermaid
 flowchart TD
-    subgraph Client["🖥️ Frontend (Next.js 15 App Router)"]
+    subgraph Client["Frontend - Next.js 15 App Router"]
         UI["Split-Screen Audit Hub Workspace"]
-        Reconciler["Interactive Live Reconciliation (Human-in-the-Loop)"]
-        Presets["Preset Sample Selector (4 Faturas de Teste)"]
+        Reconciler["Interactive Live Reconciliation"]
+        Presets["Preset Sample Selector"]
     end
 
-    subgraph API["⚙️ Next.js Backend (/api/ingest)"]
-        Throttler["IP Rate Limiter (10 req/min)"]
-        GeminiClient["Gemini API Client (@google/genai)"]
+    subgraph API["Backend Pipeline - api/ingest"]
+        Throttler["IP Rate Limiter"]
+        GeminiClient["Gemini API Client"]
         ZodParser["Zod Runtime Schema Parser"]
         AuditEngine["Deterministic Audit Engine"]
     end
 
-    subgraph Domain["🛡️ Motor de Auditoria Determinístico"]
-        NIFCheck["NIF Checksum (Algoritmo Módulo 11)"]
-        SubtotalCheck["Validação Subtotal + IVA == Total (±0.02€)"]
-        ItemCheck["Validação Qtd * PreçoUnitario == Montante"]
-        DateCheck["Validação Cronológica (Vencimento >= Emissão)"]
+    subgraph Domain["Motor de Auditoria Deterministico"]
+        NIFCheck["NIF Checksum - Modulo 11"]
+        SubtotalCheck["Subtotal + IVA == Total"]
+        ItemCheck["Qtd * PrecoUnitario == Montante"]
+        DateCheck["Vencimento >= Emissao"]
     end
 
-    subgraph TestSuite["🧪 Suíte de Testes & Mocks"]
-        MSW["Mock Service Worker (Interceção HTTP)"]
-        VitestRunner["Vitest Test Runner (11 Testes)"]
+    subgraph TestSuite["Suite de Testes e Mocks"]
+        MSW["Mock Service Worker"]
+        VitestRunner["Vitest Test Runner"]
     end
 
     Presets --> UI
-    UI -->|Base64 / Payload| Throttler
+    UI -->|"Payload"| Throttler
     Throttler --> GeminiClient
-    GeminiClient -->|Prompt + PDF/Imagem| AI_Cloud["Google Gemini 2.5 Flash"]
-    AI_Cloud -->|JSON Estruturado| ZodParser
-    ZodParser -->|Typed Object| AuditEngine
+    GeminiClient -->|"Prompt + Documento"| AI_Cloud["Google Gemini 2.5 Flash"]
+    AI_Cloud -->|"JSON Estruturado"| ZodParser
+    ZodParser -->|"Typed Object"| AuditEngine
     
-    AuditEngine --> NIFCheck & SubtotalCheck & ItemCheck & DateCheck
-    AuditEngine -->|AuditReport (Score + Flags)| Reconciler
-    Reconciler -->|Edições em Tempo Real (60fps)| AuditEngine
+    AuditEngine --> NIFCheck
+    AuditEngine --> SubtotalCheck
+    AuditEngine --> ItemCheck
+    AuditEngine --> DateCheck
 
-    MSW -.->|Simula Resposta de IA| GeminiClient
+    AuditEngine -->|"AuditReport (Score + Flags)"| Reconciler
+    Reconciler -->|"Edicoes em Tempo Real"| AuditEngine
+
+    MSW -.->|"Simula Resposta de IA"| GeminiClient
     VitestRunner --> TestSuite
 ```
 
